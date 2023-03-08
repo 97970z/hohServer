@@ -11,7 +11,7 @@ export const generateToken = (user) => {
     email: user.email,
   };
   const options = {
-    expiresIn: "23h",
+    expiresIn: "24h",
   };
   const token = sign(payload, JWT_SECRET, options);
   return token;

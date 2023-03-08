@@ -19,8 +19,9 @@ app.listen(3001, () => {
   console.log("Server started on port 3001");
 });
 
-app.use(express.static(__dirname + "./build"));
+const path = "/Users/user/Project/HelperOfHomework/client/build";
+app.use(express.static(path));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "./build/index.html");
+  res.sendFile(path + "/index.html");
 });

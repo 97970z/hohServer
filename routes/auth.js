@@ -6,7 +6,6 @@ import User from "../models/user";
 
 const router = Router();
 
-// 회원가입
 router.post(
   "/register",
   [
@@ -26,7 +25,6 @@ router.post(
   }
 );
 
-// 로그인
 router.post(
   "/login",
   [
@@ -42,7 +40,6 @@ router.post(
   }
 );
 
-// 현재 로그인한 본인 정보 가져오기
 router.get("/me", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);

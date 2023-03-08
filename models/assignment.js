@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { Schema, model } from "mongoose";
 
 const AssignmentSchema = new Schema({
@@ -7,7 +6,7 @@ const AssignmentSchema = new Schema({
     required: true,
   },
   author: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
@@ -30,6 +29,12 @@ const AssignmentSchema = new Schema({
     max: 5,
     required: true,
   },
+  answers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Answer",
+    },
+  ],
 });
 
 const Assignment = model("Assignment", AssignmentSchema);

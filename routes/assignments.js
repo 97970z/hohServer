@@ -3,24 +3,35 @@ import {
   createAssignment,
   getAssignments,
   getAssignmentById,
+  createAssignmentAnswer,
+  getAssignmentAnswerById,
+  deleteAssignment,
 } from "../controllers/assignments";
-import { verifyToken } from "../config/jwt";
 
 const router = Router();
 
-// 과제 생성
 router.post("/", async (req, res) => {
   createAssignment(req, res);
 });
 
-// 모든 과제 가져오기
+router.post("/answer", async (req, res) => {
+  createAssignmentAnswer(req, res);
+});
+
+router.get("/answer/:id", async (req, res) => {
+  getAssignmentAnswerById(req, res);
+});
+
 router.get("/", async (req, res) => {
   getAssignments(req, res);
 });
 
-// 특정 과제 가져오기
 router.get("/:id", async (req, res) => {
   getAssignmentById(req, res);
+});
+
+router.delete("/:id", async (req, res) => {
+  deleteAssignment(req, res);
 });
 
 export default router;

@@ -33,12 +33,10 @@ export const updateUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-    // Check if the logged-in user has permission to update
     if (user.id !== req.user.id) {
       return res.status(403).json({ msg: "Unauthorized" });
     }
 
-    // Update the user
     const { name, email, password } = req.body;
     user.name = name || user.name;
     user.email = email || user.email;
@@ -64,12 +62,10 @@ export const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-    // Check if the logged-in user has permission to delete
     if (user.id !== req.user.id) {
       return res.status(403).json({ msg: "Unauthorized" });
     }
 
-    // Delete the user
     await user.remove();
 
     res.json({ msg: "User deleted" });
