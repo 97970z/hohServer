@@ -23,6 +23,10 @@ const AssignmentSchema = new Schema({
     type: String,
     required: true,
   },
+  gptanswer: {
+    type: String,
+    required: true,
+  },
   points: {
     type: Number,
     min: 1,

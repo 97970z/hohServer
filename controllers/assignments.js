@@ -3,7 +3,8 @@ import Answer from "../models/answer";
 
 export const createAssignment = async (req, res) => {
   try {
-    const { title, author, genre, expiration, content, points } = req.body;
+    const { title, author, genre, expiration, content, gptanswer, points } =
+      req.body;
 
     const assignment = new Assignment({
       title,
@@ -11,6 +12,7 @@ export const createAssignment = async (req, res) => {
       genre,
       expiration,
       content,
+      gptanswer,
       points,
     });
 
@@ -106,6 +108,32 @@ export const deleteAssignment = async (req, res) => {
     console.error(err.message);
     if (err.kind === "ObjectId") {
       return res.status(404).json({ msg: "Assignment not found" });
+    }
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+export const deleteAssignmentAnswer = async (req, res) => {
+  try {
+    const answer = await Answer.findById(req.params.id);
+
+    if (!answer) {
+      return res.status(404).json({ msg: "Answer not found" });
+    }
+
+    await answer.remove();
+
+    const assignment = await Assignment.findById(answer.assignment);
+    assignment.answers = assignment.answers.filter(
+      (answer) => answer._id != req.params.id
+    );
+    await assignment.save();
+
+    res.json({ msg: "Answer removed" });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Answer not found" });
     }
     res.status(500).json({ msg: "Server error" });
   }
