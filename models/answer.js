@@ -16,6 +16,7 @@ const AnswerSchema = new Schema({
     required: true,
   },
   createdAt: { type: Date, required: true, default: Date.now },
+  accepted: { type: Boolean, required: true, default: false },
 });
 
 const Answer = model("Answer", AnswerSchema);

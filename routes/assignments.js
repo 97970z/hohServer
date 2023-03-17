@@ -7,6 +7,7 @@ import {
   getAssignmentAnswerById,
   deleteAssignment,
   deleteAssignmentAnswer,
+  acceptAssignmentAnswer,
 } from "../controllers/assignments";
 
 const router = Router();
@@ -37,6 +38,10 @@ router.delete("/:id", async (req, res) => {
 
 router.delete("/answer/:id", async (req, res) => {
   deleteAssignmentAnswer(req, res);
+});
+
+router.put("/answer/:id/accept", async (req, res) => {
+  acceptAssignmentAnswer(req, res);
 });
 
 export default router;

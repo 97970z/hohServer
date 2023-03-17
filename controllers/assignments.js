@@ -1,5 +1,6 @@
 import Assignment from "../models/assignment";
 import Answer from "../models/answer";
+import User from "../models/user";
 
 export const createAssignment = async (req, res) => {
   try {
@@ -136,5 +137,23 @@ export const deleteAssignmentAnswer = async (req, res) => {
       return res.status(404).json({ msg: "Answer not found" });
     }
     res.status(500).json({ msg: "Server error" });
+  }
+};
+
+export const acceptAssignmentAnswer = async (req, res) => {
+  try {
+    const answer = await Answer.findById(req.params.id);
+    answer.accepted = true;
+    await answer.save();
+
+    const user = await User.findById(answer.author);
+    const assignment = await Assignment.findById(answer.assignment);
+    user.points += assignment.points;
+    await user.save();
+
+    res.status(200).json({ message: "Answer accepted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
   }
 };
