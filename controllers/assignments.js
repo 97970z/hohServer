@@ -94,6 +94,24 @@ export const getAssignmentAnswerById = async (req, res) => {
   }
 };
 
+export const getAssignmentAnswerById2 = async (req, res) => {
+  try {
+    const answer = await Answer.find({ assignment: req.params.id });
+
+    if (!answer) {
+      return res.status(404).json({ msg: "Answer not found" });
+    }
+
+    res.json(answer);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Answer not found" });
+    }
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
 export const deleteAssignment = async (req, res) => {
   try {
     const assignment = await Assignment.findById(req.params.id);
@@ -103,6 +121,8 @@ export const deleteAssignment = async (req, res) => {
     }
 
     await assignment.remove();
+
+    await Answer.deleteMany({ assignment: req.params.id });
 
     res.json({ msg: "Assignment removed" });
   } catch (err) {
@@ -143,6 +163,9 @@ export const deleteAssignmentAnswer = async (req, res) => {
 export const acceptAssignmentAnswer = async (req, res) => {
   try {
     const answer = await Answer.findById(req.params.id);
+    if (answer.accepted === true) {
+      return res.status(400).json({ msg: "Answer already accepted" });
+    }
     answer.accepted = true;
     await answer.save();
 

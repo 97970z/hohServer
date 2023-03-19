@@ -10,7 +10,12 @@ const app = express();
 connectDB();
 
 app.use(json());
-app.use(cors());
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/assignments", assignmentRouter);

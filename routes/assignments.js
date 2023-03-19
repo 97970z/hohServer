@@ -1,10 +1,11 @@
 import { Router } from "express";
 import {
   createAssignment,
+  createAssignmentAnswer,
   getAssignments,
   getAssignmentById,
-  createAssignmentAnswer,
   getAssignmentAnswerById,
+  getAssignmentAnswerById2,
   deleteAssignment,
   deleteAssignmentAnswer,
   acceptAssignmentAnswer,
@@ -22,6 +23,10 @@ router.post("/answer", async (req, res) => {
 
 router.get("/answer/:id", async (req, res) => {
   getAssignmentAnswerById(req, res);
+});
+
+router.get("/:id/answers", async (req, res) => {
+  getAssignmentAnswerById2(req, res);
 });
 
 router.get("/", async (req, res) => {
