@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check, validationResult } from "express-validator";
-import { verifyToken } from "../config/jwt";
+import { verifyToken, verifyRefreshToken, generateToken } from "../config/jwt";
 import { register, login } from "../controllers/auth";
 import User from "../models/user";
 
@@ -48,6 +48,24 @@ router.get("/me", verifyToken, async (req, res) => {
     console.error(err.message);
     res.status(500).json({ msg: "Server error" });
   }
+});
+
+router.post("/refresh-token", (req, res) => {
+  const { refreshToken } = req.body;
+  if (!refreshToken) {
+    return res.status(400).json({ error: "No refresh token provided" });
+  }
+
+  const { success, decoded, error } = verifyRefreshToken(refreshToken);
+  if (!success) {
+    return res.status(401).json({ error: "Invalid refresh token: " + error });
+  }
+
+  const newTokenData = generateToken(decoded);
+  res.status(200).json({
+    token: newTokenData.token,
+    accessTokenExp: newTokenData.accessTokenExp,
+  });
 });
 
 export default router;
