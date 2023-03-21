@@ -77,19 +77,3 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 };
-
-export const checkDuplicateName = async (req, res) => {
-  try {
-    const { name } = req.params;
-
-    const user = await User.findOne({ name });
-    if (!user) {
-      return res.status(200).json({ message: "Username is available" });
-    } else {
-      return res.status(200).json({ message: "Username is already taken" });
-    }
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ msg: "Server error" });
-  }
-};

@@ -6,7 +6,6 @@ import {
   getUserById,
   updateUser,
   deleteUser,
-  checkDuplicateName,
 } from "../controllers/user";
 
 const router = Router();
@@ -34,10 +33,6 @@ router.put(
 
 router.delete("/:id", verifyToken, async (req, res) => {
   deleteUser(req, res);
-});
-
-router.get("/duplicate-check/:name", async (req, res) => {
-  checkDuplicateName(req, res);
 });
 
 export default router;

@@ -24,7 +24,10 @@ app.listen(3001, () => {
   console.log("Server started on port 3001");
 });
 
+// local용
 const path = "/Users/user/Project/HelperOfHomework/client/build";
+// aws용
+// const path = "/home/ubuntu/hoh/client/build";
 app.use(express.static(path));
 
 app.get("/", (req, res) => {
