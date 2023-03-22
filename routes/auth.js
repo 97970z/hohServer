@@ -36,20 +36,22 @@ router.get("/verify-email/:token", async (req, res) => {
 
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(400).send("User not found");
+      return res.status(400).send("유효하지 않은 이메일 인증입니다.");
     }
 
     if (user.isVerified) {
-      return res.status(400).send("Email is already verified");
+      return res.status(400).send("이미 이메일 인증을 완료했습니다.");
     }
 
     user.isVerified = true;
     await user.save();
 
-    res.status(200).send("Email verified successfully");
+    res
+      .status(200)
+      .send("이메일 인증에 성공했습니다. 사이트로 돌아가 로그인해주세요.");
   } catch (err) {
     console.log(err);
-    res.status(500).send("Error verifying email");
+    res.status(500).send("이메일 인증에 실패했습니다.");
   }
 });
 
@@ -100,10 +102,16 @@ router.get("/check-name/:name", async (req, res) => {
   const { name } = req.params;
 
   const user = await User.findOne({ name });
+  // user의 길이가 4자 이상 12자 이하인지 확인
+  if (name.length < 4 || name.length > 12) {
+    return res
+      .status(200)
+      .json({ message: "이름은 4자 이상 12자 이하로 입력해주세요." });
+  }
   if (!user) {
-    return res.status(200).json({ message: "Username is available" });
+    return res.status(200).json({ message: "사용 가능한 이름입니다." });
   } else {
-    return res.status(200).json({ message: "Username is already taken" });
+    return res.status(200).json({ message: "이미 사용 중 입니다." });
   }
 });
 
@@ -112,9 +120,9 @@ router.post("/check-email", async (req, res) => {
 
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(200).json({ message: "Email is available" });
+    return res.status(200).json({ message: "사용 가능한 이메일입니다." });
   }
-  return res.status(200).json({ message: "Email is already taken" });
+  return res.status(200).json({ message: "이미 사용 중 입니다." });
 });
 
 export default router;

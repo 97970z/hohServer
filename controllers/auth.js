@@ -93,7 +93,16 @@ export const login = async (req, res) => {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
 
-    const isMatch = await compare(password, user.password);
+    const isMatch = await new Promise((resolve, reject) => {
+      compare(password, user.password, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+
     if (!isMatch) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
